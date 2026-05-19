@@ -48,12 +48,14 @@ const Coursecard = ({course}) => {
                     </div>
 
                     {/* Action Button */}
+                       <Link href={`/Tutors/${_id}`}>
                     <button
-                        className="w-full bg-[#2d9282] hover:bg-[#227064] text-white py-3 rounded-lg text-[15px] font-medium transition-colors duration-200"
+                        className="w-full bg-[#2d9282] hover:bg-[#227064] text-white py-3 rounded-lg text-[15px] font-medium transition-colors duration-200 cursor-pointer"
                     //   onClick={() => alert(`Booking a session with `)}
                     >
                         Book Session
                     </button>
+                    </Link>
                 </div>
             </div>
         </div>

@@ -66,7 +66,7 @@ const Tutorsdeliesspage = async ({params}) => {
         {/* Action Button */}
         <div className="mt-8">
           <button
-            className="px-6 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 text-[14px] font-medium rounded-lg shadow-sm transition-colors duration-200"
+            className="bg-[#2d9282] px-4 hover:bg-[#227064] text-white py-3 rounded-lg text-15px font-medium transition-colors duration-200 text-[14px] font-medium rounded-lg shadow-sm transition-colors duration-200"
             // onClick={() => alert(`Booking a session with ${data.name}`)}
           >
             Book Session

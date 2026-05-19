@@ -1,9 +1,14 @@
 'use client'
-
+import toast, { Toaster } from 'react-hot-toast';
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { object } from 'better-auth';
+import { authClient } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
+
 
 export default function RegisterPage() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,14 +21,34 @@ export default function RegisterPage() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      [email]: value,
+      [photoUrl]: value,
+      [password]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle registration logic here (e.g., API call)
-    console.log('Registration Data Submitted:', formData);
-    alert(`Welcome aboard, ${formData.name}!`);
+    
+
+     const { name, email, photoUrl, password } = formData;
+
+  const { data, error } = await authClient.signUp.email({
+    name,
+    email,
+    password,
+    image: photoUrl,
+  });
+
+  if (error) {
+    toast.error(error.message || "Registration failed");
+    return;
+  }
+
+  toast.success("Successfully created!");
+
+  router.push("/");
+    
   };
 
   const handleGoogleSignUp = () => {

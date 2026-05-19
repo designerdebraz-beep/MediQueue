@@ -13,7 +13,7 @@ const Feachercard = ({ course }) => {
             <div className="flex flex-col w-full sm:w-[280px] md:w-[300px] lg:w-[320px] xl:w-[350px] bg-white rounded-[16px] border border-gray-100 shadow-sm overflow-hidden transition-transform duration-200 hover:-translate-y-0.5 mx-auto sm:mx-0">
                 {/* Image Wrap */}
                 <div className="w-full h-[200px] sm:h-[180px] p-3 box-border">
-                    <Link href={`/Tutors/${_id}`}>
+                
                     <div className="relative w-full h-full overflow-hidden rounded-[12px]">
                         <Image
                             src={image}
@@ -24,7 +24,7 @@ const Feachercard = ({ course }) => {
                             priority
                         />
                     </div>
-                    </Link>
+                   
                 </div>
 
                 {/* Content */}
@@ -47,12 +47,14 @@ const Feachercard = ({ course }) => {
                     </div>
 
                     {/* Action Button */}
+                     <Link href={`/Tutors/${_id}`}>
                     <button
                         className="w-full bg-[#2d9282] hover:bg-[#227064] text-white py-3 rounded-lg text-[15px] font-medium transition-colors duration-200"
                     // onClick={() => alert(`Booking a session with `)}
                     >
                         Book Session
                     </button>
+                    </Link>
                 </div>
             </div>
         </div>

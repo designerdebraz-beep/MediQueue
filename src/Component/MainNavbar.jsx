@@ -8,14 +8,21 @@ import { Button } from "@heroui/react";
 import Image from "next/image";
 // import { signOut, useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { signOut, useSession } from "@/lib/auth-client";
+
 
 export function MainNavbar() {
+  const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   // const router = useRouter();
   // const { data: session, isPending } = useSession();
   // console.log(session);
 
+  const {data:session, isPending}= useSession()
+  
+  console.log(session)
+  
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -50,6 +57,7 @@ export function MainNavbar() {
             </Link>
           </div>
 
+       
           <div className="hidden md:flex gap-8 items-center">
             <Link href="/" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</Link>
             <Link href="/Tutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Tutors</Link>
@@ -59,52 +67,50 @@ export function MainNavbar() {
 
           <div className="hidden md:flex items-center gap-4">
 
-            
-              
-                <Link href="/login" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Login</Link>
+             {
+          !isPending && !session ? <>
+          <Link href="/login" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Login</Link>
+
+
                 <Link href="/register">
 
                   <Button color="primary" className="font-bold rounded-full px-8 shadow-lg shadow-blue-600/20">
                     Join Free
                   </Button>
-                </Link>
-            
+                </Link></>:
+                
                 <div className="relative group">
                   <button className="flex items-center gap-3 p-1 rounded-full hover:bg-muted transition-colors border border-transparent hover:border-border">
                     <Image
                       width={40}
                       height={40}
-                      src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=400"
+                      src={session?.user?.image}
                       alt="avatar"
                       className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-600/10"
                     />
                     <div className="text-left hidden lg:block">
                       <p className="text-sm font-bold truncate max-w-25"></p>
-                      <p className="text-[10px] text-slate-500">Student</p>
+                      <p className="text-[10px] text-slate-500">{session?.user?.name}</p>
                     </div>
                   </button>
                   <div className="absolute right-0 top-12 w-56 bg-white border border-slate-200 rounded-2xl shadow-2xl hidden group-hover:flex flex-col py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                     <div className="px-4 py-3 border-b border-slate-100">
                       <p className="font-bold text-sm">Welcome back!</p>
-                      <p className="text-xs truncate text-slate-500"></p>
+                      <p className="text-xs truncate text-slate-500">{session?.user?.email}</p>
                     </div>
                     <Link href="/dashboard" className="px-4 py-2 text-sm hover:bg-muted flex items-center gap-3 transition-colors">
                       <LayoutDashboard className="w-4 h-4" /> Dashboard
                     </Link>
-                    <Link href="/settings" className="px-4 py-2 text-sm hover:bg-muted flex items-center gap-3 transition-colors">
-                      <User className="w-4 h-4" /> Settings
-                    </Link>
+                   
                     <button
-                      // onClick={handleLogOut}
+                      onClick={handleLogOut}
                       className="px-4 py-2 text-sm text-red-500 hover:bg-red-50 flex items-center gap-3 transition-colors text-left">
                       <LogOut className="w-4 h-4" /> Log Out
                     </button>
                   </div>
                 </div>
-            
 
-
-
+        }
           </div>
 
           <div className="md:hidden flex items-center">
@@ -124,7 +130,9 @@ export function MainNavbar() {
           <Link href="/dashboard" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Dashboard</Link>
           <div className="pt-4 border-t border-border mt-4">
 
-            <div className="grid grid-cols-2 gap-4">
+        {
+          !isPending && !session ?<>
+           <div className="grid grid-cols-2 gap-4">
               <Link href="/login">
                 <Button href="/login" variant="bordered" className="rounded-xl">Login</Button>
               </Link>
@@ -132,13 +140,17 @@ export function MainNavbar() {
                 <Button href="/register" color="primary" className="rounded-xl">Join Free</Button>
               </Link>
             </div>
-
-            <div className="flex flex-col gap-2">
-              <p className="px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Account</p>
+          </>:
+           <div className="flex flex-col gap-2">
+              <p className="px-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">{session?.user?.name}</p>
               <button
                 onClick={handleLogOut}
                 className="block w-full text-left px-4 py-3 text-base font-medium text-red-500 hover:bg-red-50 rounded-xl">Log Out</button>
             </div>
+        }
+           
+
+           
 
           </div>
         </div>

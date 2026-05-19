@@ -1,5 +1,7 @@
 'use client'
+import toast, { Toaster } from "react-hot-toast";
 
+import { authClient } from '@/lib/auth-client';
 import React, { useState } from 'react';
 
 export default function LoginPage() {
@@ -16,10 +18,46 @@ export default function LoginPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log('Login credentials submitted:', formData);
-    alert(`Attempting login for: ${formData.email}`);
+  //   console.log('Login credentials submitted:', formData);
+  //   alert(`Attempting login for: ${formData.email}`);
+  //   const { data, error } = await authClient.signIn.email({
+        
+  //       email,
+  //       password,
+  //       callbackURL: "/",
+  //     });
+     
+
+  //     if (error) {
+  //   toast.error(error.message || "Login failed");
+  //   return;
+  // }
+
+  // toast.success("Successfully Login!");
+   
+
+  const { email, password } = formData;
+
+  try {
+    const { data, error } = await authClient.signIn.email({
+      email,
+      password,
+      callbackURL: "/",
+    });
+
+    if (error) {
+      toast.error(error.message || "Login failed");
+      return;
+    }
+
+    toast.success("Login successful!");
+  } catch (err) {
+    console.log(err);
+    toast.error("Something went wrong");
+  }
+    
   };
 
   const handleForgotPassword = (e) => {
