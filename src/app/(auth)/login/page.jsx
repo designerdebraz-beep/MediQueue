@@ -4,6 +4,8 @@ import toast, { Toaster } from "react-hot-toast";
 import { authClient } from '@/lib/auth-client';
 import React, { useState } from 'react';
 
+
+
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: '',
@@ -20,22 +22,7 @@ export default function LoginPage() {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-  //   console.log('Login credentials submitted:', formData);
-  //   alert(`Attempting login for: ${formData.email}`);
-  //   const { data, error } = await authClient.signIn.email({
-        
-  //       email,
-  //       password,
-  //       callbackURL: "/",
-  //     });
-     
 
-  //     if (error) {
-  //   toast.error(error.message || "Login failed");
-  //   return;
-  // }
-
-  // toast.success("Successfully Login!");
    
 
   const { email, password } = formData;
@@ -65,10 +52,12 @@ export default function LoginPage() {
     alert('Reset password link triggered!');
   };
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     // Integrate your OAuth handler here (e.g., Firebase signInWithPopup or NextAuth signIn('google'))
-    console.log('Google Sign-In initiated');
-    alert('Connecting with Google...');
+    
+    await authClient.signIn.social({
+      provider: "google"
+    })
   };
 
   return (

@@ -51,10 +51,11 @@ export default function RegisterPage() {
     
   };
 
-  const handleGoogleSignUp = () => {
+  const handleGoogleSignUp = async () => {
     // Integrate your Google OAuth provider logic here
-    console.log('Google Sign-Up initiated');
-    alert('Connecting with Google...');
+    await authClient.signIn.social({
+          provider: "google"
+        })
   };
 
   return (
