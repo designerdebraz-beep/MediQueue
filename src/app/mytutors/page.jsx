@@ -6,15 +6,17 @@ import toast from 'react-hot-toast';
 const Mytutorpage = () => {
   const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // মডাল এবং এডিট ডেটার স্টেট
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTutor, setSelectedTutor] = useState(null);
 
-  // ডাটাবেজ থেকে শুধুমাত্র নিজের ইনসার্ট করা টিউটরদের ডেটা নিয়ে আসার ফাংশন
+  const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
+
+  // ডাটাবেজ থেকে ডেটা নিয়ে আসার ফাংশন
   const fetchMyTutors = async () => {
-    const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
     try {
-      // 👈 এখানে রুট পরিবর্তন করে /my-tutors করা হয়েছে
-      const res = await fetch(`${baseUrl}/my-tutors`, {
-        cache: "no-store",
-      });
+      const res = await fetch(`${baseUrl}/my-tutors`, { cache: "no-store" });
       if (!res.ok) throw new Error("Failed to fetch tutors");
       const data = await res.json();
       setTutors(data);
@@ -30,6 +32,77 @@ const Mytutorpage = () => {
     fetchMyTutors();
   }, []);
 
+  // 🛠️ ডিলিট হ্যান্ডলার
+  const handleDelete = async (id) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this tutor?");
+    if (!isConfirmed) return;
+
+    const deleteToastId = toast.loading("Deleting tutor...");
+    try {
+      const res = await fetch(`${baseUrl}/tutors/${id}`, { method: "DELETE" });
+      const result = await res.json();
+
+      if (res.ok && result.success) {
+        toast.success("Tutor deleted successfully!", { id: deleteToastId });
+        setTutors((prev) => prev.filter(tutor => tutor._id !== id));
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong while deleting", { id: deleteToastId });
+    }
+  };
+
+  // ✍️ এডিট আইকনে ক্লিক করলে মডাল ওপেন করার ফাংশন
+  const openEditModal = (tutor) => {
+    setSelectedTutor({
+      ...tutor,
+      photoUrl: tutor.image || "", // ফর্মের ফিল্ড নেম সিঙ্ক রাখার জন্য
+      teachingMode: tutor.mode || "Online"
+    });
+    setIsModalOpen(true);
+  };
+
+  // 🔄 ফর্ম ইনপুট চেঞ্জ হ্যান্ডলার
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedTutor(prev => ({ ...prev, [name]: value }));
+  };
+
+  // 💾 আপডেট সাবমিট হ্যান্ডলার
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+    const updateToastId = toast.loading("Updating tutor details...");
+
+    try {
+      const res = await fetch(`${baseUrl}/tutors/${selectedTutor._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...selectedTutor,
+          image: selectedTutor.photoUrl, // ডাটাবেজের স্কিমার সাথে ম্যাচ করা
+          mode: selectedTutor.teachingMode
+        }),
+      });
+
+      const result = await res.json();
+
+      if (res.ok && result.success) {
+        toast.success("Tutor updated successfully!", { id: updateToastId });
+        setIsModalOpen(false); // মডাল বন্ধ করা
+        
+        // রিফ্রেশ ছাড়া ইউআই-তে রিয়েল-টাইম ডেটা আপডেট করা
+        setTutors(prev => prev.map(tutor => tutor._id === selectedTutor._id ? { ...tutor, ...selectedTutor, image: selectedTutor.photoUrl, mode: selectedTutor.teachingMode } : tutor));
+      } else {
+        throw new Error(result.message || "Failed to update");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update tutor", { id: updateToastId });
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-32 text-gray-500 gap-3">
@@ -40,10 +113,12 @@ const Mytutorpage = () => {
   }
 
   return (
-    <div className="py-10 px-4 max-w-[1200px] mx-auto">
-      <div className="mb-10 text-center md:text-left">
-        <h2 className="text-3xl font-bold text-gray-900">My Inserted Tutors</h2>
-        <p className="text-gray-500 mt-2">Only displaying the tutors you have inserted from the Add Tutor form.</p>
+    <div className="py-10 px-4 max-w-[1250px] mx-auto bg-[#fcfcfc] min-h-screen relative">
+      
+      {/* হেডিং */}
+      <div className="mb-8 text-center md:text-left">
+        <h2 className="text-2xl font-bold text-gray-900">My Inserted Tutors</h2>
+        <p className="text-sm text-gray-500 mt-1">Manage all the tutors you have added to the platform.</p>
       </div>
 
       {tutors.length === 0 ? (
@@ -51,62 +126,160 @@ const Mytutorpage = () => {
           <p className="text-gray-500 text-lg font-medium">No tutors inserted by you yet!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tutors.map((tutor) => (
-            <div 
-              key={tutor._id} 
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col group"
-            >
-              <div className="h-52 w-full bg-gray-50 relative overflow-hidden">
-                <img 
-                  src={tutor.image || "https://images.unsplash.com/photo-1544717305-2782549b5136"} 
-                  alt={tutor.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <span className="absolute top-4 right-4 bg-[#2d9282] text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm">
-                  {tutor.mode}
-                </span>
-              </div>
-
-              <div className="p-5 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#2d9282] bg-[#2d9282]/10 px-2.5 py-1 rounded-md">
-                      {tutor.subject}
-                    </span>
-                    <span className="text-sm font-semibold text-gray-700">
-                      ৳{tutor.hourlyFee}/hr
-                    </span>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-gray-800 line-clamp-1 mb-1">
-                    {tutor.name}
-                  </h3>
-                  
-                  <p className="text-xs text-gray-500 font-medium mb-3 flex items-center gap-1">
-                    📍 {tutor.location}
-                  </p>
-
-                  <div className="space-y-2 border-t border-gray-50 pt-3 text-sm text-gray-600">
-                    <p className="line-clamp-1">
-                      <span className="font-semibold text-gray-700">Institution:</span> {tutor.institution}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-5 pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-semibold">
-                  <div className="text-gray-500">
-                    Slots: <span className="text-gray-800 font-bold">{tutor.remainingSlots ?? tutor.totalSlot}</span>/{tutor.totalSlot}
-                  </div>
-                  <div className="text-gray-400 font-normal">
-                    {tutor.available}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="w-full bg-white rounded-[20px] border border-gray-100 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[900px] text-left border-collapse">
+              <thead>
+                <tr className="border-b border-gray-100 text-sm font-semibold text-gray-600 bg-gray-50/50">
+                  <th className="py-5 px-6">Tutor Name</th>
+                  <th className="py-5 px-6">Subject</th>
+                  <th className="py-5 px-6">Available</th>
+                  <th className="py-5 px-6">Hourly Fee</th>
+                  <th className="py-5 px-6 text-center">Total Slot</th>
+                  <th className="py-5 px-6">Registration Date</th>
+                  <th className="py-5 px-6 text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50 text-sm text-gray-700">
+                {tutors.map((tutor) => (
+                  <tr key={tutor._id} className="hover:bg-gray-50/60 transition-colors duration-150">
+                    <td className="py-4 px-6 font-medium text-gray-900">{tutor.name}</td>
+                    <td className="py-4 px-6">{tutor.subject}</td>
+                    <td className="py-4 px-6 text-gray-500 max-w-[220px] truncate">{tutor.available || "Not specified"}</td>
+                    <td className="py-4 px-6 font-medium">৳{tutor.hourlyFee}</td>
+                    <td className="py-4 px-6 text-center">
+                      <span className="inline-block bg-[#e6f4f1] text-[#2d9282] px-2.5 py-1 rounded-md text-xs font-bold">
+                        {tutor.totalSlot || 0}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 text-gray-500">
+                      {tutor.createdAt ? new Date(tutor.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : "Recently"}
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className="flex items-center justify-center gap-4">
+                        {/* Delete */}
+                        <button onClick={() => handleDelete(tutor._id)} className="text-red-400 hover:text-red-600 transition-colors">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                          </svg>
+                        </button>
+                        {/* ✍️ Edit পেন্সিল বাটন পরিবর্তন করা হলো */}
+                        <button onClick={() => openEditModal(tutor)} className="text-green-400 hover:text-green-600 transition-colors">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
+
+      {/* 🖼️ স্ক্রিনশটের হুবহু পপ-আপ মডাল (Modal Form) */}
+      {isModalOpen && selectedTutor && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl max-w-[600px] w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100 flex flex-col">
+            
+            {/* মডাল হেডার */}
+            <div className="p-6 text-center border-b border-gray-50">
+              <h3 className="text-xl font-bold text-gray-900">Book Session</h3>
+              <p className="text-xs text-gray-400 mt-1">Make changes to your profile here. Click save when you're done.</p>
+            </div>
+
+            {/* মডাল ফর্ম বডি */}
+            <form onSubmit={handleUpdateSubmit} className="p-6 space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                {/* Tutor Name */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Tutor Name</label>
+                  <input type="text" name="name" value={selectedTutor.name || ''} onChange={handleInputChange} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2d9282]" required />
+                </div>
+
+                {/* Photo URL */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Photo URL</label>
+                  <input type="text" name="photoUrl" value={selectedTutor.photoUrl || ''} onChange={handleInputChange} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2d9282]" />
+                </div>
+
+                {/* Subject Dropdown */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Subject</label>
+                  <select name="subject" value={selectedTutor.subject || ''} onChange={handleInputChange} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2d9282] bg-white">
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Biology">Biology</option>
+                    <option value="English">English</option>
+                  </select>
+                </div>
+
+                {/* Available Days and Time */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Available Days and Time</label>
+                  <input type="text" name="available" value={selectedTutor.available || ''} onChange={handleInputChange} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2d9282]" placeholder="e.g. Sun - Thu 5:00 PM - 8:00 PM" required />
+                </div>
+
+                {/* Hourly Fee */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Hourly Fee</label>
+                  <input type="number" name="hourlyFee" value={selectedTutor.hourlyFee || ''} onChange={handleInputChange} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2d9282]" required />
+                </div>
+
+                {/* Total Slot */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Total Slot</label>
+                  <input type="number" name="totalSlot" value={selectedTutor.totalSlot || ''} onChange={handleInputChange} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2d9282]" required />
+                </div>
+
+                {/* Institution */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Institution</label>
+                  <input type="text" name="institution" value={selectedTutor.institution || ''} onChange={handleInputChange} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2d9282]" required />
+                </div>
+
+                {/* Location */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Location (Area/City)</label>
+                  <input type="text" name="location" value={selectedTutor.location || ''} onChange={handleInputChange} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2d9282]" required />
+                </div>
+
+                {/* Teaching Mode */}
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Teaching Mode</label>
+                  <select name="teachingMode" value={selectedTutor.teachingMode || 'Online'} onChange={handleInputChange} className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2d9282] bg-white">
+                    <option value="Online">Online</option>
+                    <option value="Offline">Offline</option>
+                  </select>
+                </div>
+
+                {/* Experience */}
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Experience</label>
+                  <textarea name="experience" value={selectedTutor.experience || ''} onChange={handleInputChange} rows="2" className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-[#2d9282] resize-none"></textarea>
+                </div>
+
+              </div>
+
+              {/* অ্যাকশন বাটনসমূহ */}
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-50">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-xs font-semibold border border-gray-200 text-gray-600 rounded-xl hover:bg-gray-50 transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" className="px-4 py-2 text-xs font-semibold bg-black text-white rounded-xl hover:bg-gray-800 transition-colors">
+                  Confirm Booking
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
