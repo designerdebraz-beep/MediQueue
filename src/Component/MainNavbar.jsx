@@ -90,7 +90,7 @@ export function MainNavbar() {
             <Link href="/tutors" className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tutors</Link>
             <Link href="/add-tutors" className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Add Tutors</Link>
             <Link href="/mytutors" className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">My tutors</Link>
-            <Link href="/mybookingtutors" className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">MyBooking Tutors</Link>
+            <Link href="/mybookingtutors" className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">My Tutors list</Link>
           </div>
 
           {/* Right Side Options (Theme Toggle + Auth) */}
@@ -136,7 +136,7 @@ export function MainNavbar() {
                     <p className="text-xs truncate text-slate-500 dark:text-slate-400">{session?.user?.email}</p>
                   </div>
                   <Link href="/mybookingtutors" className="px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-3 transition-colors">
-                    <LayoutDashboard className="w-4 h-4" /> MyBooking Tutors
+                    <LayoutDashboard className="w-4 h-4" /> My Tutors list
                   </Link>
                   <button
                     onClick={handleLogOut}
