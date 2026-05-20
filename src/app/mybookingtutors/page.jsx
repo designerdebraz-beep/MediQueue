@@ -7,7 +7,7 @@ const Mybookingtutors = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ডেটা ফেচ করার ফাংশন
+  
   const fetchBookings = async () => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/bookings`, {
@@ -28,13 +28,12 @@ const Mybookingtutors = () => {
     fetchBookings();
   }, []);
 
-  // স্ট্যাটাস cancelled করার হ্যান্ডলার
   const handleCancelStatus = async (id) => {
     if (!confirm("Are you sure you want to cancel this session?")) return;
 
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/bookings/${id}/cancel`, {
-        method: "PATCH", // মেথড পরিবর্তন করে PATCH করা হয়েছে
+        method: "PATCH", 
         headers: {
           "Content-Type": "application/json",
         }
@@ -45,7 +44,7 @@ const Mybookingtutors = () => {
       if (res.ok) {
         toast.success("Booking cancelled successfully");
         
-        // পেজ রিফ্রেশ না করেই ইনস্ট্যান্টলি স্টেটের ভেতরের স্ট্যাটাস পরিবর্তন করা
+        
         setBookings(bookings.map((booking) => 
           booking._id === id ? { ...booking, status: "cancelled" } : booking
         ));
@@ -129,7 +128,7 @@ const Mybookingtutors = () => {
                       }`}
                       title={booking.status === 'cancelled' ? "Already Cancelled" : "Cancel Booking"}
                     >
-                      {/* ক্রশ (X) আইকন বা বাটন */}
+                      
                       <span className="px-2">✕</span>
                     </button>
                   </td>

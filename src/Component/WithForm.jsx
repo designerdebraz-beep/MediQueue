@@ -23,7 +23,7 @@ export function WithForm({ tutorId, remainingSlots }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false); 
 
-  // স্লট না থাকলে বাটন ডিজেবল
+  
   if (remainingSlots <= 0) {
     return (
       <Button disabled className="bg-gray-400 text-white py-3 px-5 rounded-lg cursor-not-allowed">
@@ -48,7 +48,7 @@ export function WithForm({ tutorId, remainingSlots }) {
     };
 
     try {
-      // পুরাতন PATCH মেথড বাদ দিয়ে এখন এক রিকোয়েস্টে সব পাঠানো হচ্ছে POST মেথডে
+     
       const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/bookings`, {
         method: "POST", 
         headers: {
@@ -66,7 +66,7 @@ export function WithForm({ tutorId, remainingSlots }) {
       form.reset();
       setIsSubmitted(true);
       
-      // স্লট কাউন্ট লাইভ আপডেট করার জন্য
+      
       router.refresh(); 
 
     } catch (error) {

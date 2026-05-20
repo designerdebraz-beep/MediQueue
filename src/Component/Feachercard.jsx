@@ -71,7 +71,7 @@ const Feachercard = ({ course }) => {
                         <p>
                             <span className="font-semibold text-gray-800">
                                 Fee:
-                            </span>{" "}
+                            </span>
                             {fee}
                         </p>
 

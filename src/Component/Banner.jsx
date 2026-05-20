@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Banner() {
   return (
@@ -23,10 +24,11 @@ export default function Banner() {
               <span>🧠 Personalized Learning</span>
               <span>🔒 Safe & Secure Classes</span>
             </div>
-
+    
             <button className="mt-10 bg-blue-500 hover:bg-blue-600 transition-all duration-300 text-white font-bold px-10 py-4 rounded-full shadow-lg">
               BOOK A SESSION
             </button>
+           
           </div>
 
           {/* Right Image */}

@@ -64,6 +64,8 @@ export function MainNavbar() {
             <Link href="/tutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Tutors</Link>
 
             <Link href="/add-tutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Add Tutors</Link>
+
+            <Link href="/mytutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">My tutors</Link>
             
             <Link href="/mybookingtutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">MyBooking Tutors</Link>
           </div>
@@ -135,6 +137,8 @@ export function MainNavbar() {
           <Link href="/tutors" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Tutors</Link>
 
           <Link href="/add-tutors" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Add Tutors</Link>
+
+           <Link href="/mytutors" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">My tutors</Link>
 
           <Link href="/mybookingtutors" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">My Booking Tutors</Link>
 

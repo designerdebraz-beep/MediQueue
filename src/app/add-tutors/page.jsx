@@ -1,13 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const AddTutorForm = () => {
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const form = e.target;
 
+    // ফর্ম থেকে ডেটা অবজেক্ট তৈরি
     const tutorData = {
       name: form.name.value,
       image: form.image.value,
@@ -22,27 +27,42 @@ const AddTutorForm = () => {
       mode: form.mode.value,
     };
 
-    console.log(tutorData);
+    // ক্লায়েন্ট সাইড সেফগার্ড ইউআরএল
+    const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
 
-    // Send data to backend here
-    // fetch(...)
+    try {
+      const res = await fetch(`${baseUrl}/tutors`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(tutorData),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) throw new Error(result.message || "Failed to add tutor");
+
+      // সফল হলে নোটিফিকেশন এবং ফর্ম রিসেট
+      toast.success("Tutor added successfully!");
+      form.reset(); 
+
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="max-w-5xl mx-auto bg-white shadow-md border border-gray-100 rounded-2xl p-6 md:p-10">
-      
-      <h2 className="text-3xl font-bold text-gray-800 mb-8">
-        Add Tutor
-      </h2>
+    <div className="max-w-5xl mx-auto bg-white shadow-md border border-gray-100 rounded-2xl p-6 md:p-10 my-10">
+      <h2 className="text-3xl font-bold text-gray-800 mb-8">Add Tutor</h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-
         {/* Tutor Name */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Tutor Name
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Tutor Name</label>
           <input
             type="text"
             name="name"
@@ -54,10 +74,7 @@ const AddTutorForm = () => {
 
         {/* Photo URL */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Photo URL
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Photo URL</label>
           <input
             type="url"
             name="image"
@@ -69,10 +86,7 @@ const AddTutorForm = () => {
 
         {/* Subject */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Subject / Category
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Subject / Category</label>
           <select
             name="subject"
             className="w-full border border-gray-200 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#2d9282]"
@@ -90,10 +104,7 @@ const AddTutorForm = () => {
 
         {/* Available */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Available Days and Time
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Available Days and Time</label>
           <input
             type="text"
             name="available"
@@ -105,10 +116,7 @@ const AddTutorForm = () => {
 
         {/* Hourly Fee */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Hourly Fee
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Hourly Fee</label>
           <input
             type="number"
             name="hourlyFee"
@@ -120,10 +128,7 @@ const AddTutorForm = () => {
 
         {/* Total Slot */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Total Slot
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Total Slot</label>
           <input
             type="number"
             name="totalSlot"
@@ -135,10 +140,7 @@ const AddTutorForm = () => {
 
         {/* Session Start Date */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Session Start Date
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Session Start Date</label>
           <input
             type="date"
             name="sessionStartDate"
@@ -149,10 +151,7 @@ const AddTutorForm = () => {
 
         {/* Institution */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Institution
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Institution</label>
           <input
             type="text"
             name="institution"
@@ -164,10 +163,7 @@ const AddTutorForm = () => {
 
         {/* Experience */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Experience
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Experience</label>
           <textarea
             name="experience"
             rows="4"
@@ -179,10 +175,7 @@ const AddTutorForm = () => {
 
         {/* Location */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Location (Area/City)
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Location (Area/City)</label>
           <input
             type="text"
             name="location"
@@ -194,10 +187,7 @@ const AddTutorForm = () => {
 
         {/* Teaching Mode */}
         <div>
-          <label className="block mb-2 font-medium text-gray-700">
-            Teaching Mode
-          </label>
-
+          <label className="block mb-2 font-medium text-gray-700">Teaching Mode</label>
           <select
             name="mode"
             className="w-full border border-gray-200 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-[#2d9282]"
@@ -213,9 +203,10 @@ const AddTutorForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-[#2d9282] hover:bg-[#227064] text-white py-3 rounded-lg font-medium transition duration-200"
+          disabled={loading}
+          className="w-full bg-[#2d9282] hover:bg-[#227064] text-white py-3 rounded-lg font-medium transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          Add Tutor
+          {loading ? "Adding Tutor..." : "Add Tutor"}
         </button>
       </form>
     </div>
