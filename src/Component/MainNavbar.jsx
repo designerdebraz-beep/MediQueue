@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// ☀️ 🌙 Sun এবং Moon আইকন ইম্পোর্ট করা হলো
+//  import sun nad moon icon
 import { BookOpen, Menu, X, User, LogOut, LayoutDashboard, Sun, Moon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
@@ -14,16 +14,16 @@ export function MainNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
-  // 🌓 থিম স্টেট এবং মাউন্ট চেকিং
+
   const [theme, setTheme] = useState("light");
   const [mounted, setMounted] = useState(false);
 
   const { data: session, isPending } = useSession();
 
-  // স্ক্রোল ইফেক্ট এবং লোকাল স্টোরেজ থেকে থিম লোড করা
+  // sotre in local storeage
   useEffect(() => {
     setMounted(true);
-    // আগের সেভ করা থিম চেক করা, না থাকলে ডিফল্ট লাইট
+    // check before 
     const savedTheme = localStorage.getItem("theme") || "light";
     setTheme(savedTheme);
     
@@ -38,7 +38,7 @@ export function MainNavbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🔄 থিম পরিবর্তন করার ফাংশন
+  // change theme function
   const toggleTheme = () => {
     if (theme === "light") {
       document.documentElement.classList.add("dark");
@@ -56,11 +56,11 @@ export function MainNavbar() {
     router.push("/");
   };
 
-  // হাইড্রেশন এরর এড়ানোর জন্য মাউন্ট হওয়া পর্যন্ত অপেক্ষা করা
+ 
   if (!mounted) return null;
 
   return (
-    // 🎨 ডার্ক মোডের জন্য ব্যাকগ্রাউন্ড ক্লাস দেওয়া হয়েছে (dark:bg-slate-900/80)
+  
     <nav className={`sticky top-0 w-full z-50 transition-all duration-300 ${
       scrolled 
         ? "bg-white/70 dark:bg-slate-950/70 backdrop-blur-md shadow-sm py-2" 
@@ -96,7 +96,7 @@ export function MainNavbar() {
           {/* Right Side Options (Theme Toggle + Auth) */}
           <div className="hidden md:flex items-center gap-4">
             
-            {/* ☀️/🌙 ডেস্কটপ থিম টগল বাটন */}
+            
             <button 
               onClick={toggleTheme} 
               className="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-200"
@@ -151,7 +151,7 @@ export function MainNavbar() {
 
           {/* Mobile Right Controls */}
           <div className="md:hidden flex items-center gap-2">
-            {/* ☀️/🌙 মোবাইল থিম টগল বাটন */}
+           
             <button 
               onClick={toggleTheme} 
               className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
