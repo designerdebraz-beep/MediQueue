@@ -58,6 +58,8 @@ export default function LoginPage() {
     await authClient.signIn.social({
       provider: "google"
     })
+    // const { data:token, error } = await authClient.token()
+    // console.log(token)
   };
 
   return (

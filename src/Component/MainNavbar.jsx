@@ -60,9 +60,12 @@ export function MainNavbar() {
        
           <div className="hidden md:flex gap-8 items-center">
             <Link href="/" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Home</Link>
-            <Link href="/Tutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Tutors</Link>
-            <Link href="/add-course" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Add Course</Link>
-            <Link href="/dashboard" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Dashboard</Link>
+
+            <Link href="/tutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Tutors</Link>
+
+            <Link href="/add-tutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">Add Tutors</Link>
+            
+            <Link href="/mybookingtutors" className="font-medium text-slate-700 hover:text-blue-600 transition-colors">MyBooking Tutors</Link>
           </div>
 
           <div className="hidden md:flex items-center gap-4">
@@ -82,9 +85,11 @@ export function MainNavbar() {
                 <div className="relative group">
                   <button className="flex items-center gap-3 p-1 rounded-full hover:bg-muted transition-colors border border-transparent hover:border-border">
                     <Image
+
                       width={40}
                       height={40}
-                      src={session?.user?.image}
+                      src={session?.user?.image || "https://placehold.co/600x400"}
+
                       alt="avatar"
                       className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-600/10"
                     />
@@ -98,8 +103,8 @@ export function MainNavbar() {
                       <p className="font-bold text-sm">Welcome back!</p>
                       <p className="text-xs truncate text-slate-500">{session?.user?.email}</p>
                     </div>
-                    <Link href="/dashboard" className="px-4 py-2 text-sm hover:bg-muted flex items-center gap-3 transition-colors">
-                      <LayoutDashboard className="w-4 h-4" /> Dashboard
+                    <Link href="/mybookingtutors" className="px-4 py-2 text-sm hover:bg-muted flex items-center gap-3 transition-colors">
+                      <LayoutDashboard className="w-4 h-4" /> MyBooking Tutors
                     </Link>
                    
                     <button
@@ -124,10 +129,15 @@ export function MainNavbar() {
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden px-4 pt-2 pb-6 space-y-2 bg-white border-b border-slate-200 animate-in slide-in-from-top duration-300">
+
           <Link href="/" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Home</Link>
-          <Link href="/courses" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Courses</Link>
-          <Link href="/add-course" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Add Course</Link>
-          <Link href="/dashboard" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Dashboard</Link>
+
+          <Link href="/tutors" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Tutors</Link>
+
+          <Link href="/add-tutors" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">Add Tutors</Link>
+
+          <Link href="/mybookingtutors" className="block px-4 py-3 text-base font-medium text-slate-900 hover:bg-slate-50 rounded-xl">My Booking Tutors</Link>
+
           <div className="pt-4 border-t border-border mt-4">
 
         {

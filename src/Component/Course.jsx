@@ -12,7 +12,7 @@ const Coursecard = ({course}) => {
            
             <div className="flex flex-col w-[320px] bg-white rounded-[16px] border border-gray-100 shadow-sm overflow-hidden transition-transform duration-200 hover:-translate-y-0.5">
                 {/* Image Wrap */}
-                <Link href={`/Tutors/${_id}`}>
+                <Link href={`/tutors/${_id}`}>
                 <div className="w-full h-[180px] p-3 box-border">
                     <div className="relative w-full h-full overflow-hidden rounded-[12px]">
                         <Image
@@ -48,7 +48,7 @@ const Coursecard = ({course}) => {
                     </div>
 
                     {/* Action Button */}
-                       <Link href={`/Tutors/${_id}`}>
+                       <Link href={`/tutors/${_id}`}>
                     <button
                         className="w-full bg-[#2d9282] hover:bg-[#227064] text-white py-3 rounded-lg text-[15px] font-medium transition-colors duration-200 cursor-pointer"
                     //   onClick={() => alert(`Booking a session with `)}
