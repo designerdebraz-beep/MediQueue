@@ -3,8 +3,8 @@ import { auth } from "@/lib/auth";
 import { Button } from "@heroui/react";
 import Image from "next/image";
 
-
-const getdealiesdata = async (id) => {
+// 🎯 টোকেন প্যারামিটার হিসেবে রিসিভ করার জন্য ফাংশনটি আপডেট করা হয়েছে
+const getdealiesdata = async (id, token) => {
   const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
   
   try {
@@ -12,7 +12,8 @@ const getdealiesdata = async (id) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        // authorization: `Bearer ${token}`
+        // যদি টোকেন থাকে তবেই হেডার পাঠাবে, নাহলে খালি থাকবে বা আনঅথরাইজড হ্যান্ডেল হবে
+        ...(token && { "authorization": `Bearer ${token}` })
       },
       cache: "no-store", 
     });
@@ -22,7 +23,7 @@ const getdealiesdata = async (id) => {
       return null; 
     }
 
-    return res.json();
+    return await res.json();
   } catch (error) {
     console.error("Fetch API Connection Error:", error);
     return null;
@@ -33,7 +34,6 @@ const Tutorsdeliesspage = async ({ params }) => {
   // Next.js রুলস অনুযায়ী params আনর‍্যাপ করা
   const { id } = await params;
   
-  
   let token = null;
   try {
     const session = await auth.api.getSession();
@@ -42,8 +42,8 @@ const Tutorsdeliesspage = async ({ params }) => {
     console.error("Auth Session Fetch Error:", authError);
   }
   
-  // ডাটাবেজ থেকে নির্দিষ্ট টিউটরের ডাটা ফেচ করা
-  const data = await getdealiesdata(id);
+  // 🎯 টোকেন রেডি হওয়ার পর ডেটা ফেচিং ফাংশনে আইডি এবং টোকেন একসাথে পাস করা হলো
+  const data = await getdealiesdata(id, token);
 
   // যদি ডাটাবেজে এই আইডির কোনো টিউটর না থাকে
   if (!data) {

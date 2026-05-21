@@ -11,7 +11,7 @@ const TutorsPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
   const loadCourses = async (searchVal = "", startVal = "", endVal = "") => {
     try {
