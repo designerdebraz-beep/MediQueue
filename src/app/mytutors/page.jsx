@@ -242,7 +242,7 @@ const Mytutorpage = () => {
                     </td>
 
                     <td className="py-3 sm:py-4 px-3 sm:px-6 font-medium">
-                      ৳{tutor.hourlyFee}
+                      ${tutor.hourlyFee}
                     </td>
 
                     <td className="py-3 sm:py-4 px-3 sm:px-6 text-center">

@@ -23,7 +23,7 @@ export default function Footer() {
           {/* Brand Info */}
           <div>
             <h2 className="text-3xl font-bold text-blue-400">
-              TutorConnect
+              MediQueue
             </h2>
 
             <p className="mt-4 text-gray-400 leading-relaxed">
