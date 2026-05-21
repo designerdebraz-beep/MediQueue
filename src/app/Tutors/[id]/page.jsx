@@ -1,25 +1,55 @@
 import { WithForm } from "@/Component/WithForm";
 import { auth } from "@/lib/auth";
 import { Button } from "@heroui/react";
+import { headers } from "next/headers";
 import Image from "next/image";
 
 
+// const getdealiesdata = async (id, token) => {
+//   const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
+  
+//   console.log(token)
+//   try {
+//     const res = await fetch(`${baseUrl}/tutors/${id}`, {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+       
+//         ...(token && { "authorization": `Bearer ${token}` })
+//       },
+//       cache: "no-store", 
+//     });
+
+//     if (!res.ok) {
+//       console.error(`Fetching failed for ID: ${id}, Status: ${res.status}`);
+//       return null; 
+//     }
+
+//     return await res.json();
+//   } catch (error) {
+//     console.error("Fetch API Connection Error:", error);
+//     return null;
+//   }
+// };
 const getdealiesdata = async (id, token) => {
-  const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
+  const baseUrl = process.env.NEXT_PUBLIC_URL;
+  
+  
+  console.log("Sending Token to Backend:", token); 
   
   try {
     const res = await fetch(`${baseUrl}/tutors/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-       
-        ...(token && { "authorization": `Bearer ${token}` })
+        ...(token ? { "authorization": `Bearer ${token}` } : {})
       },
       cache: "no-store", 
     });
 
     if (!res.ok) {
-      console.error(`Fetching failed for ID: ${id}, Status: ${res.status}`);
+      
+      console.error(`Fetching failed for ID: ${id}. Response Status: ${res.status}`);
       return null; 
     }
 
@@ -29,24 +59,27 @@ const getdealiesdata = async (id, token) => {
     return null;
   }
 };
-
 const Tutorsdeliesspage = async ({ params }) => {
   
   const { id } = await params;
   
-  let token = null;
+  let newtoken = null;
   try {
-    const session = await auth.api.getSession();
-    token = session?.token;
+    const {token} = await auth.api.getToken({
+      headers: await headers()
+    });
+
+    console.log(token)
+    newtoken = token;
 
   } catch (authError) {
-    
+
     console.error("Auth Session Fetch Error:", authError);
   }
   
  
-  const data = await getdealiesdata(id, token);
-
+  const data = await getdealiesdata(id, newtoken);
+  console.log(data.image)
   
   if (!data) {
     return (
@@ -70,7 +103,9 @@ const Tutorsdeliesspage = async ({ params }) => {
             <Image
               src={data?.image}
               alt={data?.name || "Tutor Image"}
-              fill
+              width={500}
+              height={600}
+              // fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 450px"
               priority
