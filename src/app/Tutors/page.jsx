@@ -13,12 +13,10 @@ const TutorsPage = () => {
 
   const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
 
-  // ডেটা লোড করার কেন্দ্রীয় ফাংশন
   const loadCourses = async (searchVal = "", startVal = "", endVal = "") => {
     try {
       const params = new URLSearchParams();
       
-      // শুধুমাত্র ভ্যালিড ডেটা থাকলেই প্যারামিটার যুক্ত হবে
       if (searchVal && searchVal.trim() !== "") params.append("search", searchVal.trim());
       if (startVal) params.append("startDate", startVal);
       if (endVal) params.append("endDate", endVal);
@@ -38,33 +36,32 @@ const TutorsPage = () => {
     }
   };
 
-  // ১. পেজ খোলার সাথে সাথে কোনো ফিল্টার ছাড়াই সব ডেটা (All Data) নিয়ে আসবে
   useEffect(() => {
     loadCourses("", "", "");
   }, []);
 
-  // ২. টাইপ করার সাথে সাথে সার্চ হ্যান্ডলার
+ 
   const handleSearchChange = (e) => {
     const val = e.target.value;
     setSearchText(val);
     loadCourses(val, startDate, endDate); // রিয়েল-টাইম ফিল্টারিং
   };
 
-  // ৩. স্টার্ট ডেট চেঞ্জ
+ 
   const handleStartDateChange = (e) => {
     const val = e.target.value;
     setStartDate(val);
     loadCourses(searchText, val, endDate);
   };
 
-  // ৪. এন্ড ডেট চেঞ্জ
+
   const handleEndDateChange = (e) => {
     const val = e.target.value;
     setEndDate(val);
     loadCourses(searchText, startDate, val);
   };
 
-  // ৫. রিসেট ফিল্টার (ক্লিক করলে আবার পুরো ডাটাবেজের ডেটা লোড হবে)
+  // ৫. রিসেট ফিল্টার
   const handleResetFilters = () => {
     setSearchText("");
     setStartDate("");
@@ -81,7 +78,7 @@ const TutorsPage = () => {
         All Tutors
       </h2>
 
-      {/* 🔍 সার্চ ও ফিল্টার এরিয়া */}
+      {/* 🔍 Search and Filter Panel */}
       <div className='px-4 md:px-7 mb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end'>
         
         {/* Search Input */}

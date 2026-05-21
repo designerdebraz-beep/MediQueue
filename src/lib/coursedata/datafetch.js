@@ -8,3 +8,4 @@ export const featchuredcourse = async ()=>{
     const data = await res.json()
     return data
 }
+

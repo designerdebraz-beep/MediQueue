@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { Button } from "@heroui/react";
 import Image from "next/image";
 
-// ১. নির্দিষ্ট আইডি দিয়ে ডেটা ফেচ করার ব্যাকএন্ড ফাংশন
+
 const getdealiesdata = async (id) => {
   const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
   
@@ -12,6 +12,7 @@ const getdealiesdata = async (id) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        // authorization: `Bearer ${token}`
       },
       cache: "no-store", 
     });
@@ -32,7 +33,7 @@ const Tutorsdeliesspage = async ({ params }) => {
   // Next.js রুলস অনুযায়ী params আনর‍্যাপ করা
   const { id } = await params;
   
-  // সেফটি চেক: যদি কোনো কারণে সেশন কল এরর দেয়, যেন পেজ ক্র্যাশ না করে
+  
   let token = null;
   try {
     const session = await auth.api.getSession();
