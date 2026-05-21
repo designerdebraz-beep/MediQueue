@@ -13,7 +13,7 @@ const Mytutorpage = () => {
 
   const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
 
-  // ডাটাবেজ থেকে ডেটা নিয়ে আসার ফাংশন
+  
   const fetchMyTutors = async () => {
     try {
       const res = await fetch(`${baseUrl}/my-tutors`, { cache: "no-store" });
@@ -32,7 +32,7 @@ const Mytutorpage = () => {
     fetchMyTutors();
   }, []);
 
-  // 🛠️ ডিলিট হ্যান্ডলার
+  // 
   const handleDelete = async (id) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this tutor?");
     if (!isConfirmed) return;
@@ -54,23 +54,23 @@ const Mytutorpage = () => {
     }
   };
 
-  // ✍️ এডিট আইকনে ক্লিক করলে মডাল ওপেন করার ফাংশন
+  // 
   const openEditModal = (tutor) => {
     setSelectedTutor({
       ...tutor,
-      photoUrl: tutor.image || "", // ফর্মের ফিল্ড নেম সিঙ্ক রাখার জন্য
+      photoUrl: tutor.image || "", 
       teachingMode: tutor.mode || "Online"
     });
     setIsModalOpen(true);
   };
 
-  // 🔄 ফর্ম ইনপুট চেঞ্জ হ্যান্ডলার
+  // 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSelectedTutor(prev => ({ ...prev, [name]: value }));
   };
 
-  // 💾 আপডেট সাবমিট হ্যান্ডলার
+  // 
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     const updateToastId = toast.loading("Updating tutor details...");
@@ -92,7 +92,7 @@ const Mytutorpage = () => {
         toast.success("Tutor updated successfully!", { id: updateToastId });
         setIsModalOpen(false); // মডাল বন্ধ করা
         
-        // রিফ্রেশ ছাড়া ইউআই-তে রিয়েল-টাইম ডেটা আপডেট করা
+       
         setTutors(prev => prev.map(tutor => tutor._id === selectedTutor._id ? { ...tutor, ...selectedTutor, image: selectedTutor.photoUrl, mode: selectedTutor.teachingMode } : tutor));
       } else {
         throw new Error(result.message || "Failed to update");
@@ -115,7 +115,7 @@ const Mytutorpage = () => {
   return (
     <div className="py-10 px-4 max-w-[1250px] mx-auto bg-[#fcfcfc] min-h-screen relative">
       
-      {/* হেডিং */}
+      {/* heading */}
       <div className="mb-8 text-center md:text-left">
         <h2 className="text-2xl font-bold text-gray-900">My Inserted Tutors</h2>
         <p className="text-sm text-gray-500 mt-1">Manage all the tutors you have added to the platform.</p>
@@ -179,18 +179,18 @@ const Mytutorpage = () => {
         </div>
       )}
 
-      {/* 🖼️ স্ক্রিনশটের হুবহু পপ-আপ মডাল (Modal Form) */}
+      {/*  (Modal Form) */}
       {isModalOpen && selectedTutor && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl max-w-[600px] w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100 flex flex-col">
             
-            {/* মডাল হেডার */}
+            {/* model header */}
             <div className="p-6 text-center border-b border-gray-50">
               <h3 className="text-xl font-bold text-gray-900">Book Session</h3>
               <p className="text-xs text-gray-400 mt-1">Make changes to your profile here. Click save when you're done.</p>
             </div>
 
-            {/* মডাল ফর্ম বডি */}
+            {/* model from body */}
             <form onSubmit={handleUpdateSubmit} className="p-6 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 
@@ -265,7 +265,7 @@ const Mytutorpage = () => {
 
               </div>
 
-              {/* অ্যাকশন বাটনসমূহ */}
+              {/* Action Button */}
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-50">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-xs font-semibold border border-gray-200 text-gray-600 rounded-xl hover:bg-gray-50 transition-colors">
                   Cancel

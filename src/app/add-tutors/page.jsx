@@ -12,7 +12,7 @@ const AddTutorForm = () => {
 
     const form = e.target;
 
-    // ফর্ম থেকে ডেটা অবজেক্ট তৈরি
+    
     const tutorData = {
       name: form.name.value,
       image: form.image.value,
@@ -27,7 +27,7 @@ const AddTutorForm = () => {
       mode: form.mode.value,
     };
 
-    // ক্লায়েন্ট সাইড সেফগার্ড ইউআরএল
+  
     const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
 
     try {
@@ -43,7 +43,7 @@ const AddTutorForm = () => {
 
       if (!res.ok) throw new Error(result.message || "Failed to add tutor");
 
-      // সফল হলে নোটিফিকেশন এবং ফর্ম রিসেট
+     
       toast.success("Tutor added successfully!");
       form.reset(); 
 

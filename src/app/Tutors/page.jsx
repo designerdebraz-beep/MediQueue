@@ -11,7 +11,7 @@ const TutorsPage = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+  const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
 
   const loadCourses = async (searchVal = "", startVal = "", endVal = "") => {
     try {
@@ -44,7 +44,7 @@ const TutorsPage = () => {
   const handleSearchChange = (e) => {
     const val = e.target.value;
     setSearchText(val);
-    loadCourses(val, startDate, endDate); // রিয়েল-টাইম ফিল্টারিং
+    loadCourses(val, startDate, endDate); 
   };
 
  
@@ -61,7 +61,7 @@ const TutorsPage = () => {
     loadCourses(searchText, startDate, val);
   };
 
-  // ৫. রিসেট ফিল্টার
+  
   const handleResetFilters = () => {
     setSearchText("");
     setStartDate("");
@@ -71,7 +71,7 @@ const TutorsPage = () => {
   };
 
   return (
-    <div className="py-10 px-4 max-w-[1250px] mx-auto bg-[#fcfcfc] min-h-screen">
+    <div className="py-10 px-4 max-w-1250px mx-auto bg-[#fcfcfc] min-h-screen">
       
       {/* Heading */}
       <h2 className='font-bold text-3xl px-4 md:px-7 mb-6 text-gray-900'>
@@ -127,7 +127,7 @@ const TutorsPage = () => {
 
       </div>
 
-      {/* 🔄 কার্ড ডিসপ্লে গ্রিড */}
+      {/*  Card display gird */}
       {loading ? (
         <div className="flex flex-col items-center justify-center py-24 text-gray-500 gap-3">
           <div className="w-8 h-8 border-4 border-[#2d9282] border-t-transparent rounded-full animate-spin"></div>

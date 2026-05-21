@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { Button } from "@heroui/react";
 import Image from "next/image";
 
-// 🎯 টোকেন প্যারামিটার হিসেবে রিসিভ করার জন্য ফাংশনটি আপডেট করা হয়েছে
+
 const getdealiesdata = async (id, token) => {
   const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
   
@@ -12,7 +12,7 @@ const getdealiesdata = async (id, token) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        // যদি টোকেন থাকে তবেই হেডার পাঠাবে, নাহলে খালি থাকবে বা আনঅথরাইজড হ্যান্ডেল হবে
+       
         ...(token && { "authorization": `Bearer ${token}` })
       },
       cache: "no-store", 
@@ -31,21 +31,23 @@ const getdealiesdata = async (id, token) => {
 };
 
 const Tutorsdeliesspage = async ({ params }) => {
-  // Next.js রুলস অনুযায়ী params আনর‍্যাপ করা
+  
   const { id } = await params;
   
   let token = null;
   try {
     const session = await auth.api.getSession();
     token = session?.token;
+
   } catch (authError) {
+    
     console.error("Auth Session Fetch Error:", authError);
   }
   
-  // 🎯 টোকেন রেডি হওয়ার পর ডেটা ফেচিং ফাংশনে আইডি এবং টোকেন একসাথে পাস করা হলো
+ 
   const data = await getdealiesdata(id, token);
 
-  // যদি ডাটাবেজে এই আইডির কোনো টিউটর না থাকে
+  
   if (!data) {
     return (
       <div className="py-24 text-center">
@@ -60,14 +62,14 @@ const Tutorsdeliesspage = async ({ params }) => {
  
   return (
     <div className="py-12 px-4 max-w-7xl mx-auto">
-      <div className="w-full max-w-[950px] bg-white rounded-[24px] border border-gray-100 shadow-md p-4 sm:p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start transition-all duration-300 hover:shadow-lg mx-auto">
+      <div className="w-full max-w-950px bg-white rounded-[24px] border border-gray-100 shadow-md p-4 sm:p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start transition-all duration-300 hover:shadow-lg mx-auto">
         
         {/* Left Side Image */}
-        <div className="w-full md:w-[45%] h-[240px] sm:h-[300px] md:h-[340px] relative overflow-hidden rounded-[16px] bg-gray-50 border border-gray-100">
+        <div className="w-full md:w-[45%] h-240px sm:h-300px md:h-340px relative overflow-hidden rounded-16px bg-gray-50 border border-gray-100">
           {data.image ? (
             <Image
-              src={data.image}
-              alt={data.name || "Tutor Image"}
+              src={data?.image}
+              alt={data?.name || "Tutor Image"}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 450px"
@@ -81,14 +83,14 @@ const Tutorsdeliesspage = async ({ params }) => {
         </div>
 
         {/* Right Side Content */}
-        <div className="w-full md:w-[55%] flex flex-col justify-between min-h-[340px]">
+        <div className="w-full md:w-[55%] flex flex-col justify-between min-h-340px">
           <div>
             <div className="flex items-center justify-between gap-2 mb-2">
               <span className="text-xs font-bold uppercase tracking-wider text-[#2d9282] bg-[#2d9282]/10 px-3 py-1 rounded-md">
-                {data.subject}
+                {data?.subject}
               </span>
               <span className="text-sm font-semibold text-gray-500">
-                ⭐ {data.rating || "N/A"}
+                ⭐ {data?.rating || "N/A"}
               </span>
             </div>
 
