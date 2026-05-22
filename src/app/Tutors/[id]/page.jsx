@@ -5,36 +5,8 @@ import { headers } from "next/headers";
 import Image from "next/image";
 
 
-// const getdealiesdata = async (id, token) => {
-//   const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:8080";
-  
-//   console.log(token)
-//   try {
-//     const res = await fetch(`${baseUrl}/tutors/${id}`, {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-       
-//         ...(token && { "authorization": `Bearer ${token}` })
-//       },
-//       cache: "no-store", 
-//     });
-
-//     if (!res.ok) {
-//       console.error(`Fetching failed for ID: ${id}, Status: ${res.status}`);
-//       return null; 
-//     }
-
-//     return await res.json();
-//   } catch (error) {
-//     console.error("Fetch API Connection Error:", error);
-//     return null;
-//   }
-// };
 const getdealiesdata = async (id, token) => {
   const baseUrl = process.env.NEXT_PUBLIC_URL;
-  
-  
   console.log("Sending Token to Backend:", token); 
   
   try {
@@ -48,7 +20,6 @@ const getdealiesdata = async (id, token) => {
     });
 
     if (!res.ok) {
-      
       console.error(`Fetching failed for ID: ${id}. Response Status: ${res.status}`);
       return null; 
     }
@@ -59,27 +30,53 @@ const getdealiesdata = async (id, token) => {
     return null;
   }
 };
-const Tutorsdeliesspage = async ({ params }) => {
+
+
+export async function generateMetadata({ params }) {
+  const { id } = await params;
   
+  
+  let newtoken = null;
+  try {
+    const { token } = await auth.api.getToken({
+      headers: await headers()
+    });
+    newtoken = token;
+  } catch (authError) {
+    console.error("Auth Session Fetch Error in Metadata:", authError);
+  }
+
+  const data = await getdealiesdata(id, newtoken);
+
+ 
+  if (data && data.name) {
+    return {
+      title: `${data.name} - Expert Tutor Details`,
+      description: `Learn ${data.subject || 'Medical Science'} from ${data.name}. Book your slot now!`,
+    };
+  }
+
+  return {
+    title: "Tutor Details Not Found | MediQueue",
+  };
+}
+
+
+const Tutorsdeliesspage = async ({ params }) => {
   const { id } = await params;
   
   let newtoken = null;
   try {
-    const {token} = await auth.api.getToken({
+    const { token } = await auth.api.getToken({
       headers: await headers()
     });
-
-    console.log(token)
+    console.log(token);
     newtoken = token;
-
   } catch (authError) {
-
     console.error("Auth Session Fetch Error:", authError);
   }
   
- 
   const data = await getdealiesdata(id, newtoken);
-  console.log(data.image)
   
   if (!data) {
     return (
@@ -95,17 +92,16 @@ const Tutorsdeliesspage = async ({ params }) => {
  
   return (
     <div className="py-12 px-4 max-w-7xl mx-auto">
-      <div className="w-full max-w-950px bg-white rounded-[24px] border border-gray-100 shadow-md p-4 sm:p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start transition-all duration-300 hover:shadow-lg mx-auto">
+      <div className="w-full max-w-[950px] bg-white rounded-[24px] border border-gray-100 shadow-md p-4 sm:p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start transition-all duration-300 hover:shadow-lg mx-auto">
         
         {/* Left Side Image */}
-        <div className="w-full md:w-[45%] h-240px sm:h-300px md:h-340px relative overflow-hidden rounded-16px bg-gray-50 border border-gray-100">
+        <div className="w-full md:w-[45%] h-[240px] sm:h-[300px] md:h-[340px] relative overflow-hidden rounded-[16px] bg-gray-50 border border-gray-100">
           {data.image ? (
             <Image
               src={data?.image}
               alt={data?.name || "Tutor Image"}
               width={500}
               height={600}
-              // fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 450px"
               priority
@@ -118,7 +114,7 @@ const Tutorsdeliesspage = async ({ params }) => {
         </div>
 
         {/* Right Side Content */}
-        <div className="w-full md:w-[55%] flex flex-col justify-between min-h-340px">
+        <div className="w-full md:w-[55%] flex flex-col justify-between min-h-[340px]">
           <div>
             <div className="flex items-center justify-between gap-2 mb-2">
               <span className="text-xs font-bold uppercase tracking-wider text-[#2d9282] bg-[#2d9282]/10 px-3 py-1 rounded-md">

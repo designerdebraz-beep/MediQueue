@@ -40,7 +40,15 @@ const TutorsPage = () => {
     loadCourses("", "", "");
   }, []);
 
- 
+ useEffect(() => {
+  if (searchText.trim() !== "") {
+    document.title = `Searching: "${searchText}" | MediQueue`;
+  } else if (startDate || endDate) {
+    document.title = "Filtered Tutors | MediQueue";
+  } else {
+    document.title = "All Tutors | MediQueue";
+  }
+}, [searchText, startDate, endDate]);
   const handleSearchChange = (e) => {
     const val = e.target.value;
     setSearchText(val);

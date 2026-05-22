@@ -1,10 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import toast from "react-hot-toast";
+
+
 
 const AddTutorForm = () => {
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    
+    document.title = "Add Tutor | MediQueue";
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,6 +60,8 @@ const AddTutorForm = () => {
       setLoading(false);
     }
   };
+
+
 
   return (
     <div className="max-w-5xl mx-auto bg-white shadow-md border border-gray-100 rounded-2xl p-6 md:p-10 my-10">

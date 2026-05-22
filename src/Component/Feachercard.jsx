@@ -10,7 +10,7 @@ const Feachercard = ({ course }) => {
         subject,
         available,
         sessionStartDate,
-        fee,
+        hourlyFee,
         image
     } = course;
 
@@ -72,7 +72,7 @@ const Feachercard = ({ course }) => {
                             <span className="font-semibold text-gray-800">
                                 Fee:
                             </span>
-                            {fee}
+                            {hourlyFee}
                         </p>
 
                     </div>

@@ -6,6 +6,10 @@ import toast from 'react-hot-toast';
 const Mytutorpage = () => {
   const [tutors, setTutors] = useState([]);
   const [loading, setLoading] = useState(true);
+   useEffect(() => {
+      
+      document.title = "My Tutors | MediQueue";
+    }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTutor, setSelectedTutor] = useState(null);

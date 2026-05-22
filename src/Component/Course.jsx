@@ -3,10 +3,13 @@ import Link from 'next/link';
 import React from 'react';
 
 const Coursecard = ({course}) => {
-    const {_id, name, subject,available, sessionStartDate,fee,image }= course
+    const {_id, name, subject,available, sessionStartDate,hourlyFee
+,image }= course
+
+     console.log(hourlyFee)
     return (
 
-      
+     
         
         <div>
            
@@ -43,7 +46,7 @@ const Coursecard = ({course}) => {
                             {sessionStartDate}
                         </p>
                         <p>
-                            <span className="font-semibold text-gray-800">Fee:</span> {fee}
+                            <span className="font-semibold text-gray-800">Fee:</span> {hourlyFee}
                         </p>
                     </div>
 
