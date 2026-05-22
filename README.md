@@ -20,17 +20,45 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+# 🩺 MediQueue — Premium Tutor & Course Booking Marketplace
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+MediQueue is a modern, clean, and highly intuitive web application designed to connect students with expert medical tutors and specialized healthcare courses. Built with a premium, minimalistic aesthetic, the platform streamlines the entire process of searching, discovering, and securely booking educational sessions in real-time.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🌐 **Live Site URL:** [https://mediqueue-one-gamma.vercel.app](https://mediqueue-client.vercel.app)
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ✨ Key Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*   **🔍 Advanced Search & Dynamic Filters:** Instantly find the perfect tutor using our high-performance query system, allowing you to search by name or filter results based on precise creation date ranges.
+*   **📅 Real-Time Slot & Booking Management:** Seamlessly book a session with immediate feedback. The platform automatically tracks availability and dynamically decreases the tutor's remaining slots upon a successful booking.
+*   **🔒 Secure JWT-Based Route Protection:** Protects user privacy and sensitive interactions by leveraging secure token verification (`jose-cjs` / `JSON Web Tokens`) for private profiles and booking details.
+*   **💼 Comprehensive Tutor Dashboard (CRUD):** Empower tutors to manage their digital presence effortlessly with full capabilities to add new listings, update active schedules/fees, and remove listings in real-time.
+*   **📊 Interactive Relationship & Status Tracking:** Monitor active, confirmed, and cancelled bookings effortlessly from a unified panel designed to keep both students and teachers updated instantly.
+
+---
+
+## 🛠️ Tech Stack
+
+**Front-End / Client:**
+*   React.js & Next.js (App Router)
+*   Tailwind CSS (Premium Minimalistic Theme)
+*   Framer Motion (Smooth UX Animations)
+
+**Back-End / API (Repository Dependent):**
+*   Node.js & Express.js
+*   MongoDB (Native Driver)
+*   Jose-cjs (Secure JWKS Validation)
+
+---
+
+## 🚀 Getting Started (Local Development)
+
+Follow these steps to run the client-side environment locally:
+
+1. **Clone the repository:**
+   
+```bash
+   git clone [https://github.com/designerdebraz-beep/mediqueue-client.git](https://github.com/designerdebraz-beep/mediqueue-client.git)
+   cd mediqueue-client
