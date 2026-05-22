@@ -36,6 +36,13 @@ const Mybookingtutors = () => {
     fetchBookings();
   }, []);
 
+
+   useEffect(() => {
+        
+        document.title = "My Booked Tutors list | MediQueue";
+      }, []);
+  
+
   // CANCEL BOOKING
   const handleCancelStatus = async (id) => {
     if (

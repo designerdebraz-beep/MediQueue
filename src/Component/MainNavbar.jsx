@@ -90,7 +90,7 @@ export function MainNavbar() {
             <Link href="/tutors" className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Tutors</Link>
             <Link href="/add-tutors" className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Add Tutors</Link>
             <Link href="/mytutors" className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">My tutors</Link>
-            <Link href="/mybookingtutors" className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">My Tutors list</Link>
+            <Link href="/mybookingtutors" className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">My Booking Tutors list</Link>
           </div>
 
           {/* Right Side Options (Theme Toggle + Auth) */}
@@ -173,7 +173,7 @@ export function MainNavbar() {
           <Link href="/tutors" className="block px-4 py-3 text-base font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl">Tutors</Link>
           <Link href="/add-tutors" className="block px-4 py-3 text-base font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl">Add Tutors</Link>
           <Link href="/mytutors" className="block px-4 py-3 text-base font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl">My tutors</Link>
-          <Link href="/mybookingtutors" className="block px-4 py-3 text-base font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl">My Booking Tutors</Link>
+          <Link href="/mybookingtutors" className="block px-4 py-3 text-base font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl">My Booking Tutors list</Link>
 
           <div className="pt-4 border-t border-slate-100 dark:border-slate-800 mt-4">
             {!isPending && !session ? (
