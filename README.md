@@ -25,7 +25,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 MediQueue is a modern, clean, and highly intuitive web application designed to connect students with expert medical tutors and specialized healthcare courses. Built with a premium, minimalistic aesthetic, the platform streamlines the entire process of searching, discovering, and securely booking educational sessions in real-time.
 
-🌐 **Live Site URL:** [https://mediqueue-one-gamma.vercel.app](https://mediqueue-client.vercel.app)
+🌐 **Live Site URL:** (https://mediqueue-one-gamma.vercel.app/)
 
 ---
 
